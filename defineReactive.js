@@ -14,11 +14,11 @@ export default function defineReactive(obj, key, val) {
           childOb.dep.depend()
         }
       }
-      console.log('getter key = ', key)
+      // console.log('getter key = ', key)
       return val
     },
     set(newV) {
-      console.log('setter key = ', key)
+      // console.log('setter key = ', key)
       if (val === newV) return
       val = newV
       observe(val)

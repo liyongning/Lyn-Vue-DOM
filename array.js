@@ -5,7 +5,7 @@ export const arrayMethods = Object.create(arrayProto)
 methodsToPatch.forEach(method => {
   Object.defineProperty(arrayMethods, method, {
     value: function (...args) {
-      console.log('array reactive')
+      // console.log('array reactive')
       const ret = arrayProto[method].apply(this, args)
       let inserted = []
       switch(method) {

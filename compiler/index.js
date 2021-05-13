@@ -9,6 +9,7 @@ export default function mount(vm) {
   } else {
     el = document.createElement('div')
   }
+  vm.$el = el
 
   const ast = parse(el)
   const code = generate(ast)
@@ -34,5 +35,5 @@ function parse(node) {
 
 function generate(ast) {
   const code = ast ? genElement(ast) : '_c("div")'
-  return `with(this){${code}}`
+  return new Function(`with(this){return ${code}}`)
 }

@@ -7,8 +7,27 @@
 
 <body>
   <div id="app">
-    <div>hah</div>
     <div>{{ msg }}</div>
+    <div>{{ obj }}</div>
+    <div>{{ arr }}</div>
+    <div>
+      <span v-bind:title="message">
+        鼠标悬停几秒钟查看此处动态绑定的提示信息！
+      </span>
+    </div>
+    <div>
+      <button v-on:click="handleClick">click me</button>
+    </div>
+    <input v-model="inputVal" />
+    <div>{{ inputVal }}</div>
+    <input type="checkbox" v-model="isChecked" />
+    <div>{{ isChecked }}</div>
+    <select v-model="selectValue">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <div>{{ selectValue }}</div>
   </div>
   <script type="module">
     import Vue from './index.js'
