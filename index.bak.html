@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <div id="app">
+    <div>hah</div>
+    <div>{{ msg }}</div>
+  </div>
+  <script type="module">
+    import Vue from './index.js'
+    const ins = new Vue({
+      el: '#app',
+      data() {
+        return {
+          msg: 'hello vue',
+          obj: {
+            t: 'testObj'
+          },
+          arr: [1, 2, 3],
+          message: '页面加载于 ' + new Date().toLocaleString(),
+          inputVal: 'test',
+          isChecked: true,
+          selectValue: 2
+        }
+      },
+      methods: {
+        handleClick() {
+          console.log('handle click')
+        }
+      }
+    })
+    setTimeout(() => {
+      ins.msg = 'change hello vue'
+    }, 1000)
+    setTimeout(() => {
+      ins.obj.t = 'change testObj'
+    }, 2000)
+    setTimeout(() => {
+      ins.arr.push(4)
+    }, 3000)
+  </script>
+</body>
+
+</html>
