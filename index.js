@@ -3,12 +3,15 @@ import mount from "./compiler/index.js"
 import patch from "./compiler/patch.js"
 import installRenderHelper from "./compiler/render-helper.js"
 import defineReactive from "./defineReactive.js"
+import initComputed from "./initComputed.js"
 import initData from "./initData.js"
 
 export default function Vue(options) {
   this.$options = options
   // 处理 data
   initData(this)
+  // 处理 computed
+  initComputed(this)
   // 安装运行时的渲染帮助方法
   installRenderHelper(this)
   // patch

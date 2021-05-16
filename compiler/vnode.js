@@ -69,7 +69,9 @@ function parseAttr(vnode, node, attr) {
     } else if (attrName.match(/v-on:(.*)/)) {
       // <tag v-on:click="test" />
       const eventName = RegExp.$1
-      node.addEventListener(eventName, vnode.context.$options.methods[attrValue])
+      node.addEventListener(eventName, function() {
+        vnode.context.$options.methods[attrValue].call(vnode.context)
+      })
     } else {
       node.setAttribute(attrName, attr[attrName])
     }

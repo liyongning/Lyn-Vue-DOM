@@ -26,6 +26,10 @@
       <option value="3">3</option>
     </select>
     <div>{{ selectValue }}</div>
+    <div>{{ counter }}</div>
+    <div>{{ doubleCounter }}</div>
+    <div>{{ doubleCounter }}</div>
+    <div>{{ doubleCounter }}</div>
   </div>
   <script type="module">
     import Vue from './index.js'
@@ -41,12 +45,20 @@
           message: '页面加载于 ' + new Date().toLocaleString(),
           inputVal: 'test',
           isChecked: true,
-          selectValue: 2
+          selectValue: 2,
+          counter: 1,
         }
       },
       methods: {
         handleClick() {
           console.log('handle click')
+          this.counter++
+        }
+      },
+      computed: {
+        doubleCounter() {
+          console.log('evalute')
+          return this.counter * 2
         }
       }
     })
