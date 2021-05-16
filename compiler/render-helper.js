@@ -1,24 +1,14 @@
-export default function installRenderHelper(target) {
+import VNode from "./vnode.js"
+
+export default function renderHelper(target) {
   target._c = createElement
-  target._v = createTextNode
-  target._s = toString
+  target._v = createTextVNode
 }
 
 function createElement(tag, attr, children) {
-  const elm = document.createElement(tag)
-  for (let name in attr) {
-    elm.setAttribute(name, attr[name])
-  }
-  for (let child of children) {
-    elm.appendChild(child)
-  }
-  return elm
+  return new VNode(tag, attr, children, '', this)
 }
 
-function createTextNode(text) {
-  return document.createTextNode(text)
-}
-
-function toString(value) {
-  return value
+function createTextVNode(text) {
+  return new VNode('', {}, [], typeof text === 'object' ? JSON.stringify(text) : String(text), this)
 }

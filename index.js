@@ -1,6 +1,5 @@
 // import mount from "./compiler.js"
 import mount from "./compiler/index.js"
-import mountComponent from "./compiler/mountComponent.js"
 import patch from "./compiler/patch.js"
 import installRenderHelper from "./compiler/render-helper.js"
 import defineReactive from "./defineReactive.js"
@@ -26,7 +25,6 @@ Vue.set = function (obj, key, val) {
 
 Vue.prototype.$mount = function (vm) {
   mount(vm)
-  mountComponent(vm)
 }
 
 Vue.prototype._update = function (vnode) {
