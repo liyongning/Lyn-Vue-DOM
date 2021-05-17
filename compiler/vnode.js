@@ -1,3 +1,5 @@
+import Vue from '../index.js'
+
 export default function VNode(tag, attr, children, text, context) {
   this.tag = tag
   this.attr = attr
@@ -10,30 +12,15 @@ export default function VNode(tag, attr, children, text, context) {
 
 VNode.prototype.createElement = function (tag, attr, children) {
   const node = document.createElement(tag)
-  // 处理众多属性（原生 或者 自定义指令)
-  parseAttr(this, node, attr)
-  // 处理子节点
-  for (let child of children) {
-    if (child.text) {
-      // 文本节点
-      node.appendChild(child.createTextNode(child.text))
-    } else {
-      // 元素节点
-      const { tag, attr, children } = child
-      node.appendChild(child.createElement(tag, attr, children))
-    }
-  }
-  this.elm = node
   return node
 }
 
 VNode.prototype.createTextNode = function (text) {
   const node = document.createTextNode(text)
-  this.elm = node
   return node
 }
 
-function parseAttr(vnode, node, attr) {
+export function setAttribute(vnode, node, attr) {
   for (let attrName in attr) {
     const attrValue = attr[attrName]
     if (attrName.match(/v-model/)) {
@@ -76,4 +63,13 @@ function parseAttr(vnode, node, attr) {
       node.setAttribute(attrName, attr[attrName])
     }
   }
+}
+
+export function createComponent(parentElm, vnode, refElm) {
+  // 组件配置
+  const options = vnode.context.$options.components[vnode.tag]
+  // 将模版转换成 dom 节点
+  const childIns = new Vue(options)
+  childIns.$mount('#comp')
+  parentElm.insertBefore(childIns._vnode.elm, refElm)
 }

@@ -1,32 +1,62 @@
+import { setAttribute, createComponent } from './vnode.js'
+import { isPreserveTag } from '../utils.js'
+
 export default function patch(target) {
   function sameVnode(a, b) {
     // key 相同 && 标签相同 && 属性相同
     return a.key === b.key && (
-      a.tag === b.tag && 
+      a.tag === b.tag &&
       a.attr && b.attr
     )
   }
   // 将 VNode 变成真实节点
-  function createElm(vnode) {
+  function createElm(parentElm, vnode, refElm) {
     if (vnode.text) {
-      return vnode.createTextNode(vnode.text)  
+      return vnode.elm = vnode.createTextNode(vnode.text)
+    }
+    if (!isPreserveTag(vnode.tag)) {
+      // 组件
+      createComponent(parentElm, vnode, refElm)
+      return
     }
     const { tag, attr, children } = vnode
-    return vnode.createElement(tag, attr, children)
+    vnode.elm = vnode.createElement(tag, attr, children)
+    createChildren(vnode.elm, children)
+    setAttribute(vnode, vnode.elm, attr)
+    insert(parentElm, vnode.elm, refElm)
+  }
+
+  function insert(parentElm, node, refElm) {
+    if (parentElm) {
+      if (refElm) {
+        parentElm.insertBefore(node, refElm)
+      } else {
+        parentElm.appendChild(node)
+      }
+    }
+  }
+
+  function createChildren(parentElm, children) {
+    for (let i = 0, len = children.length; i < len; i++) {
+      createElm(parentElm, children[i], null)
+      if (children[i].text) {
+        parentElm.appendChild(children[i].elm)
+      }
+    }
   }
 
   function addVnodes(elm, children) {
-    for(let i = 0, len = children.length; i < len; i++) {
+    for (let i = 0, len = children.length; i < len; i++) {
       elm.appendChild(children[i].elm)
     }
   }
 
   function removeVnodes(elm, children) {
-    for(let i = 0, len = children.length; i < len; i++) {
+    for (let i = 0, len = children.length; i < len; i++) {
       elm.removeChild(children[i].elm)
     }
   }
- 
+
   function insertBefore(parent, node, ref) {
     parent.insertBefore(node, ref)
   }
@@ -98,10 +128,12 @@ export default function patch(target) {
   }
 
   return target.__patch__ = function (prevVnode, vnode) {
-    if (prevVnode.nodeType) {
+    if (!prevVnode) {
+      // 渲染子组件
+      createElm(null, vnode, null)
+    } else if (prevVnode.nodeType) {
       // 真实节点，首次渲染
-      const node = createElm(vnode)
-      document.body.insertBefore(node, prevVnode.nextSibling)
+      createElm(document.body, vnode, prevVnode.nextSibling)
       document.body.removeChild(prevVnode)
     } else {
       // 后续更新

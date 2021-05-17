@@ -30,6 +30,7 @@
     <div>{{ doubleCounter }}</div>
     <div>{{ doubleCounter }}</div>
     <div>{{ doubleCounter }}</div>
+    <comp></comp>
   </div>
   <script type="module">
     import Vue from './index.js'
@@ -47,6 +48,16 @@
           isChecked: true,
           selectValue: 2,
           counter: 1,
+        }
+      },
+      components: {
+        'comp': {
+          template: `<div id="comp">{{ test }}</div>`,
+          data() {
+            return {
+              test: "hello component"
+            }
+          }
         }
       },
       methods: {

@@ -19,7 +19,7 @@ export default function Vue(options) {
   patch(this)
 
   if (this.$options.el) {
-    this.$mount(this)
+    this.$mount(this.$options.el)
   }
 }
 
@@ -27,9 +27,7 @@ Vue.set = function (obj, key, val) {
   defineReactive(obj, key, val)
 }
 
-Vue.prototype.$mount = function (vm) {
-  mount(vm)
-}
+Vue.prototype.$mount = mount
 
 Vue.prototype._update = function (vnode) {
   const prevVnode = this._vnode

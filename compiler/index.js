@@ -2,19 +2,22 @@ import createAstElement from "./ast.js"
 import genElement from "./genElement.js"
 import mountComponent from "./mountComponent.js"
 
-export default function mount(vm) {
-  let el = vm.$options.el
+export default function mount(el) {
   if (el) {
     el = document.querySelector(el)
   } else {
     el = document.createElement('div')
   }
-  vm.$el = el
+  this.$el = el
+  if (!el) {
+    // 挂载子组件
+    el = document.createRange().createContextualFragment(this.$options.template).firstChild
+  }
   const ast = parse(el)
   const { render } = generate(ast)
-  vm.$options.render = render
+  this.$options.render = render
   // 编译完成，挂载组件
-  mountComponent(vm)
+  mountComponent(this)
 }
 
 // 解析节点，得到 ast
