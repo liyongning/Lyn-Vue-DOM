@@ -1,6 +1,10 @@
+import { queueWatcher } from "./asyncUpdateQueue.js"
 import Dep from "./dep.js"
 
+let uid = 0
+
 export default function Watcher(vm, cb, options) {
+  this.id = uid++
   this.vm = vm
   this.options = options || {}
   this.getter = cb
@@ -16,9 +20,18 @@ Watcher.prototype.get = function () {
 }
 
 Watcher.prototype.update = function () {
-  this.getter.call(this.vm)
   if (this.options.lazy) {
     this.dirty = true
+  } else {
+    // 将 watcher 入队
+    queueWatcher(this)
+  }
+}
+
+Watcher.prototype.run = function () {
+  const value = this.get()
+  if (value !== this.value) {
+    this.value = value
   }
 }
 

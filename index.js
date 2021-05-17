@@ -1,4 +1,5 @@
 // import mount from "./compiler.js"
+import nextTick from "./asyncUpdateQueue.js"
 import mount from "./compiler/index.js"
 import patch from "./compiler/patch.js"
 import installRenderHelper from "./compiler/render-helper.js"
@@ -45,3 +46,5 @@ Vue.prototype._update = function (vnode) {
 Vue.prototype._render = function () {
   return this.$options.render.call(this)
 }
+
+Vue.nextTick = nextTick

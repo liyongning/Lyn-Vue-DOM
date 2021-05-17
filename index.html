@@ -26,7 +26,7 @@
       <option value="3">3</option>
     </select>
     <div>{{ selectValue }}</div>
-    <div>{{ counter }}</div>
+    <div id="counter">{{ counter }}</div>
     <div>{{ doubleCounter }}</div>
     <div>{{ doubleCounter }}</div>
     <div>{{ doubleCounter }}</div>
@@ -53,6 +53,9 @@
         handleClick() {
           console.log('handle click')
           this.counter++
+          Vue.nextTick(() => {
+            console.log(document.querySelector('#counter').textContent)
+          })
         }
       },
       computed: {
