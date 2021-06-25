@@ -3,6 +3,19 @@
 
 # 运行
 
-* 在本地全局安装 serve，`npm i serve -g`
+项目采用 ES Module 的方式，所以需要在本地装一个服务器，比如：serve
 
-* 启动项目，在项目根目录执行：`serve`
+`shell
+npm i serve -g
+```
+
+执行 `serve` 命令启动项目
+
+```shell
+serve
+```
+
+# 博客
+
+[配套博客](https://juejin.cn/user/1028798616461326)
+[配套视频](https://space.bilibili.com/359669053/channel/detail?cid=178493&ctype=0)
